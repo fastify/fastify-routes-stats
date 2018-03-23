@@ -19,11 +19,22 @@ module.exports = fp(async function (fastify, opts) {
     const id = request.raw.id
     performance.mark(ONSEND + id)
     performance.measure(ROUTES + request.raw.url, PREHANDLER + id, ONSEND + id)
+
+    performance.clearMarks(ONSEND + id)
+    performance.clearMarks(PREHANDLER + id)
+
     next()
   })
 
   fastify.decorate('measurements', measurements)
   fastify.decorate('stats', stats)
+
+  const interval = setInterval(() => fastify.log.info({ stats: stats() }, 'routes stats'), 30000)
+  interval.unref()
+
+  fastify.onClose(function () {
+    clearInterval(interval)
+  })
 })
 
 function measurements () {
@@ -53,6 +64,9 @@ function stats () {
       min: s.min(),
       sd: s.sd()
     }
+
+    // always clear our measures after stats()
+    performance.clearMeasures(ROUTES + k)
 
     return acc
   }, {})

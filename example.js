@@ -1,7 +1,9 @@
 'use strict'
 
 const Fastify = require('fastify')
-const fastify = Fastify()
+const fastify = Fastify({
+  logger: true
+})
 
 fastify.register(require('.'))
 
