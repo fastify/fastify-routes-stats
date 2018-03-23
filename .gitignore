@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+*clinic-doctor*
+*flamegraph*
+*0x*
