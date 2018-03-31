@@ -14,6 +14,8 @@ test('produces some stats', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
 
+  t.tearDown(fastify.close.bind(fastify))
+
   fastify.get('/', async () => {
     return { hello: 'world' }
   })
@@ -31,6 +33,8 @@ test('produces some stats', async (t) => {
 test('measurements returns an array', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
+
+  t.tearDown(fastify.close.bind(fastify))
 
   fastify.get('/', async () => {
     return { hello: 'world' }
@@ -59,6 +63,8 @@ test('measurements returns an array', async (t) => {
 test('creates stats', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
+
+  t.tearDown(fastify.close.bind(fastify))
 
   fastify.get('/', async () => {
     return { hello: 'world' }
