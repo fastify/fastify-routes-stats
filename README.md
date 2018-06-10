@@ -1,5 +1,7 @@
 # fastify-routes-stats
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/fastify/fastify-routes-stats.svg)](https://greenkeeper.io/)
+
 Provide stats for routes using `require('perf_hooks')`, for __Fastify__.
 
 ## Install
