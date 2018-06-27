@@ -91,3 +91,37 @@ test('creates stats', async (t) => {
   t.ok(nums.min >= 0)
   t.ok(nums.sd >= 0)
 })
+
+test('group stats together', async (t) => {
+  const fastify = Fastify()
+  fastify.register(Stats)
+
+  t.tearDown(fastify.close.bind(fastify))
+
+  fastify.get('/:param/grouped-stats', { config: { statsId: 'grouped-stats' } }, async () => {
+    return { hello: 'world' }
+  })
+
+  await fastify.inject({
+    url: '/1/grouped-stats'
+  })
+
+  await fastify.inject({
+    url: '/2/grouped-stats'
+  })
+
+  await fastify.inject({
+    url: '/3/grouped-stats'
+  })
+
+  const stats = fastify.stats()
+  const nums = stats['grouped-stats']
+  t.ok(Object.keys(stats).length === 1)
+  t.ok(nums)
+  t.ok(nums.mean >= 0)
+  t.ok(nums.mode >= 0)
+  t.ok(nums.median >= 0)
+  t.ok(nums.max >= 0)
+  t.ok(nums.min >= 0)
+  t.ok(nums.sd >= 0)
+})

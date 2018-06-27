@@ -16,9 +16,13 @@ module.exports = fp(async function (fastify, opts) {
   })
 
   fastify.addHook('onSend', function (request, reply, _, next) {
+    let routeId = request.raw.url
+    if (reply.context.config.statsId) {
+      routeId = reply.context.config.statsId
+    }
     const id = request.raw.id
     performance.mark(ONSEND + id)
-    performance.measure(ROUTES + request.raw.url, PREHANDLER + id, ONSEND + id)
+    performance.measure(ROUTES + routeId, PREHANDLER + id, ONSEND + id)
 
     performance.clearMarks(ONSEND + id)
     performance.clearMarks(PREHANDLER + id)
