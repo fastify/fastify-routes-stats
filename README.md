@@ -2,7 +2,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/fastify/fastify-routes-stats.svg)](https://greenkeeper.io/)
 
-Provide stats for routes using `require('perf_hooks')`, for __Fastify__.
+Provide stats for routes using `require('perf_hooks')`, for **Fastify**.
 
 ## Install
 
@@ -13,27 +13,31 @@ npm i fastify-routes-stats
 ## Example
 
 ```js
-'use strict'
+'use strict';
 
-const Fastify = require('fastify')
-const fastify = Fastify()
+const Fastify = require('fastify');
+const fastify = Fastify();
 
-fastify.register(require('.'))
+fastify.register(require('.'));
 
-fastify.get('/', function (request, reply) {
-  reply.send({ hello: 'world' })
-})
+fastify.get('/', function(request, reply) {
+  reply.send({ hello: 'world' });
+});
 
-fastify.get('/:param/dynamic-route-example', { config: { statsId: 'group-stats-together' } }, function (request, reply) {
-  reply.send({ hello: 'world' })
-})
+fastify.get(
+  '/:param/dynamic-route-example',
+  { config: { statsId: 'group-stats-together' } },
+  function(request, reply) {
+    reply.send({ hello: 'world' });
+  }
+);
 
-fastify.get('/__stats__', async function () {
+fastify.get('/__stats__', async function() {
   // stats is added to the fastify instance
-  return this.stats()
-})
+  return this.stats();
+});
 
-fastify.listen(3000)
+fastify.listen(3000);
 ```
 
 ```sh
