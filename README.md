@@ -20,19 +20,19 @@ const fastify = Fastify()
 
 fastify.register(require('.'))
 
-fastify.get('/', function(request, reply) {
+fastify.get('/', function (request, reply) {
   reply.send({ hello: 'world' })
 })
 
 fastify.get(
   '/:param/dynamic-route-example',
   { config: { statsId: 'group-stats-together' } },
-  function(request, reply) {
+  function (request, reply) {
     reply.send({ hello: 'world' })
   }
 )
 
-fastify.get('/__stats__', async function() {
+fastify.get('/__stats__', async function () {
   // stats is added to the fastify instance
   return this.stats()
 })
