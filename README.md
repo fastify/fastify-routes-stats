@@ -2,7 +2,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/fastify/fastify-routes-stats.svg)](https://greenkeeper.io/)
 
-Provide stats for routes using `require('perf_hooks')`, for __Fastify__.
+Provide stats for routes using `require('perf_hooks')`, for **Fastify**.
 
 ## Install
 
@@ -23,6 +23,14 @@ fastify.register(require('.'))
 fastify.get('/', function (request, reply) {
   reply.send({ hello: 'world' })
 })
+
+fastify.get(
+  '/:param/dynamic-route-example',
+  { config: { statsId: 'group-stats-together' } },
+  function (request, reply) {
+    reply.send({ hello: 'world' })
+  }
+)
 
 fastify.get('/__stats__', async function () {
   // stats is added to the fastify instance
@@ -53,6 +61,14 @@ $ curl localhost:3000/__stats__ | jsonlint
     "max": 0.146983,
     "min": 0.052685,
     "sd": 0.048831576955900166
+  },
+  "group-stats-together": {
+    "mean": 0.07447716666666666,
+    "mode": 0.102686,
+    "median": 0.07249649999999999,
+    "max": 0.102686,
+    "min": 0.051836,
+    "sd": 0.01924915148692707
   }
 }
 ```
