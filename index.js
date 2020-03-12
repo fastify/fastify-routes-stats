@@ -1,12 +1,29 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const { performance } = require('perf_hooks')
+const { performance, PerformanceObserver } = require('perf_hooks')
 const summary = require('summary')
 
 const ONSEND = 'on-send-'
 const PREHANDLER = 'pre-handler-'
 const ROUTES = 'fastify-routes:'
+
+let observedEntries = []
+const obs = new PerformanceObserver((items) => {
+  items.getEntries().filter(e => {
+    return e.name.indexOf(ROUTES) === 0
+  }).map(e => {
+    const key = e.name.split(':')[1]
+    if (observedEntries[key]) {
+      observedEntries[key].push(e.duration)
+    } else {
+      observedEntries[key] = [e.duration]
+    }
+  })
+
+  performance.clearMarks()
+})
+obs.observe({ entryTypes: ['measure'] })
 
 module.exports = fp(async function (fastify, opts) {
   fastify.addHook('preHandler', function (request, reply, next) {
@@ -37,26 +54,19 @@ module.exports = fp(async function (fastify, opts) {
   interval.unref()
 
   fastify.onClose(function () {
+    observedEntries = []
     clearInterval(interval)
   })
 })
 
 function measurements () {
-  return performance.getEntriesByType('measure').filter(e => {
-    return e.name.indexOf(ROUTES) === 0
-  }).reduce((acc, e) => {
-    const key = e.name.split(':')[1]
-    if (acc[key]) {
-      acc[key].push(e.duration)
-    } else {
-      acc[key] = [e.duration]
-    }
-    return acc
-  }, {})
+  // observedEntries built in PerformanceObserver
+  return observedEntries
 }
 
 function stats () {
   const m = measurements()
+  observedEntries = []
 
   return Object.keys(m).reduce((acc, k) => {
     const s = summary(m[k])
@@ -68,9 +78,6 @@ function stats () {
       min: s.min(),
       sd: s.sd()
     }
-
-    // always clear our measures after stats()
-    performance.clearMeasures(ROUTES + k)
 
     return acc
   }, {})

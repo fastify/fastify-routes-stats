@@ -7,7 +7,6 @@ const Stats = require('.')
 
 beforeEach(async () => {
   performance.clearMarks()
-  performance.clearMeasures()
 })
 
 test('produces some stats', async (t) => {
