@@ -57,8 +57,8 @@ module.exports = fp(async function (fastify, opts) {
 
   fastify.onClose(function () {
     clearInterval(interval)
-    observedEntries = []
     obs.disconnect()
+    observedEntries = []
   })
 })
 
