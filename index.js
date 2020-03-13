@@ -7,9 +7,9 @@ const summary = require('summary')
 const ONSEND = 'on-send-'
 const PREHANDLER = 'pre-handler-'
 const ROUTES = 'fastify-routes:'
-let observedEntries = {}
 
 module.exports = fp(async function (fastify, opts) {
+  let observedEntries = {}
   const obs = new PerformanceObserver((items) => {
     const fetchedItems = items.getEntries()
     for (let i = 0; i < fetchedItems.length; i++) {
@@ -60,28 +60,28 @@ module.exports = fp(async function (fastify, opts) {
     obs.disconnect()
     observedEntries = {}
   })
+
+  function measurements () {
+    // observedEntries built in PerformanceObserver
+    return observedEntries
+  }
+
+  function stats () {
+    const m = measurements()
+    observedEntries = {}
+
+    return Object.keys(m).reduce((acc, k) => {
+      const s = summary(m[k])
+      acc[k] = {
+        mean: s.mean(),
+        mode: s.mode(),
+        median: s.median(),
+        max: s.max(),
+        min: s.min(),
+        sd: s.sd()
+      }
+
+      return acc
+    }, {})
+  }
 })
-
-function measurements () {
-  // observedEntries built in PerformanceObserver
-  return observedEntries
-}
-
-function stats () {
-  const m = measurements()
-  observedEntries = {}
-
-  return Object.keys(m).reduce((acc, k) => {
-    const s = summary(m[k])
-    acc[k] = {
-      mean: s.mean(),
-      mode: s.mode(),
-      median: s.median(),
-      max: s.max(),
-      min: s.min(),
-      sd: s.sd()
-    }
-
-    return acc
-  }, {})
-}
