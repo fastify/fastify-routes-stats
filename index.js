@@ -7,25 +7,27 @@ const summary = require('summary')
 const ONSEND = 'on-send-'
 const PREHANDLER = 'pre-handler-'
 const ROUTES = 'fastify-routes:'
-
 let observedEntries = []
-const obs = new PerformanceObserver((items) => {
-  items.getEntries().filter(e => {
-    return e.name.indexOf(ROUTES) === 0
-  }).map(e => {
-    const key = e.name.split(':')[1]
-    if (observedEntries[key]) {
-      observedEntries[key].push(e.duration)
-    } else {
-      observedEntries[key] = [e.duration]
-    }
-  })
-
-  performance.clearMarks()
-})
-obs.observe({ entryTypes: ['measure'] })
 
 module.exports = fp(async function (fastify, opts) {
+  const obs = new PerformanceObserver((items) => {
+    const fetchedItems = items.getEntries()
+    for (let i = 0; i < fetchedItems.length; i++) {
+      const e = fetchedItems[i]
+      if (e.name.indexOf(ROUTES) === 0) {
+        const key = e.name.split(':')[1]
+        if (observedEntries[key]) {
+          observedEntries[key].push(e.duration)
+        } else {
+          observedEntries[key] = [e.duration]
+        }
+      }
+    }
+
+    performance.clearMarks()
+  })
+  obs.observe({ entryTypes: ['measure'] })
+
   fastify.addHook('preHandler', function (request, reply, next) {
     const id = request.raw.id
     performance.mark(PREHANDLER + id)
@@ -54,8 +56,9 @@ module.exports = fp(async function (fastify, opts) {
   interval.unref()
 
   fastify.onClose(function () {
-    observedEntries = []
     clearInterval(interval)
+    observedEntries = []
+    obs.disconnect()
   })
 })
 
