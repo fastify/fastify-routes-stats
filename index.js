@@ -7,7 +7,7 @@ const summary = require('summary')
 const ONSEND = 'on-send-'
 const PREHANDLER = 'pre-handler-'
 const ROUTES = 'fastify-routes:'
-let observedEntries = []
+let observedEntries = {}
 
 module.exports = fp(async function (fastify, opts) {
   const obs = new PerformanceObserver((items) => {
@@ -58,7 +58,7 @@ module.exports = fp(async function (fastify, opts) {
   fastify.onClose(function () {
     clearInterval(interval)
     obs.disconnect()
-    observedEntries = []
+    observedEntries = {}
   })
 })
 
@@ -69,7 +69,7 @@ function measurements () {
 
 function stats () {
   const m = measurements()
-  observedEntries = []
+  observedEntries = {}
 
   return Object.keys(m).reduce((acc, k) => {
     const s = summary(m[k])
