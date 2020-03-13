@@ -5,7 +5,7 @@ const { performance, PerformanceObserver } = require('perf_hooks')
 const summary = require('summary')
 
 const ONSEND = 'on-send-'
-const PREHANDLER = 'pre-handler-'
+const ONREQUEST = 'on-request-'
 const ROUTES = 'fastify-routes:'
 
 module.exports = fp(async function (fastify, opts) {
@@ -28,9 +28,9 @@ module.exports = fp(async function (fastify, opts) {
   })
   obs.observe({ entryTypes: ['measure'] })
 
-  fastify.addHook('preHandler', function (request, reply, next) {
+  fastify.addHook('onRequest', function (request, reply, next) {
     const id = request.raw.id
-    performance.mark(PREHANDLER + id)
+    performance.mark(ONREQUEST + id)
     next()
   })
 
@@ -41,10 +41,10 @@ module.exports = fp(async function (fastify, opts) {
     }
     const id = request.raw.id
     performance.mark(ONSEND + id)
-    performance.measure(ROUTES + routeId, PREHANDLER + id, ONSEND + id)
+    performance.measure(ROUTES + routeId, ONREQUEST + id, ONSEND + id)
 
     performance.clearMarks(ONSEND + id)
-    performance.clearMarks(PREHANDLER + id)
+    performance.clearMarks(ONREQUEST + id)
 
     next()
   })
