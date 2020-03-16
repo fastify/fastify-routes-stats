@@ -1,6 +1,6 @@
 # fastify-routes-stats
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/fastify/fastify-routes-stats.svg)](https://greenkeeper.io/) [![Node.js CI](https://github.com/fastify/fastify-routes-stats/fastify-routes-stats/workflows/Node.js%20CI/badge.svg)](https://github.com/fastify/fastify-routes-stats/fastify-routes-stats/actions)
+[![Greenkeeper badge](https://badges.greenkeeper.io/fastify/fastify-routes-stats.svg)](https://greenkeeper.io/) [![Node.js CI](https://github.com/fastify/fastify-routes-stats/workflows/Node.js%20CI/badge.svg)](https://github.com/fastify/fastify-routes-stats/actions)
 
 Provide stats for routes using `require('perf_hooks')`, for **Fastify**.
 
@@ -37,38 +37,51 @@ fastify.get('/__stats__', async function () {
   return this.stats()
 })
 
+// To group all methods of a route together:
+//   mergeMethods: true
+fastify.get('/mergeMethods', { config: { mergeMethods: true } }, function (request, reply) {
+  reply.send({ hello: 'world' })
+})
+
+fastify.post('/mergeMethods', { config: { mergeMethods: true } }, function (request, reply) {
+  reply.send({ hello: 'world', POST: true })
+})
+
 fastify.listen(3000)
 ```
 
 ```sh
-$ curl localhost:3000/__stats__ | jsonlint
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   232  100   232    0     0  38906      0 --:--:-- --:--:-- --:--:-- 46400
+$ curl -s localhost:3000/__stats__ | jsonlint
 {
-  "/__stats__": {
-    "mean": 0.6234458,
-    "mode": 1.112343,
-    "median": 0.760182,
-    "max": 1.112343,
-    "min": 0.123645,
-    "sd": 0.461611690848163
+  "All Methods": {
+    "/mergeMethods": {
+      "mean": 0.09750119999999998,
+      "mode": 0.310097,
+      "median": 0.049117499999999994,
+      "max": 0.310097,
+      "min": 0.044229,
+      "sd": 0.08820506012796418
+    }
   },
-  "/": {
-    "mean": 0.092497,
-    "mode": 0.146983,
-    "median": 0.077823,
-    "max": 0.146983,
-    "min": 0.052685,
-    "sd": 0.048831576955900166
+  "GET": {
+    "/": {
+      "mean": 0.2406786,
+      "mode": 0.755647,
+      "median": 0.121999,
+      "max": 0.755647,
+      "min": 0.050214,
+      "sd": 0.2905856386253457
+    }
   },
-  "group-stats-together": {
-    "mean": 0.07447716666666666,
-    "mode": 0.102686,
-    "median": 0.07249649999999999,
-    "max": 0.102686,
-    "min": 0.051836,
-    "sd": 0.01924915148692707
+  "POST": {
+    "/": {
+      "mean": 0.11260519999999999,
+      "mode": 0.292262,
+      "median": 0.055179,
+      "max": 0.292262,
+      "min": 0.044159,
+      "sd": 0.10438752062722824
+    }
   }
 }
 ```

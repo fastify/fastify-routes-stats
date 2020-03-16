@@ -7,6 +7,7 @@ const summary = require('summary')
 const ONSEND = 'on-send-'
 const ONREQUEST = 'on-request-'
 const ROUTES = 'fastify-routes:'
+const ALLMETHODS = 'All Methods'
 
 module.exports = fp(async function (fastify, opts) {
   let observedEntries = {}
@@ -15,11 +16,15 @@ module.exports = fp(async function (fastify, opts) {
     for (let i = 0; i < fetchedItems.length; i++) {
       const e = fetchedItems[i]
       if (e.name.indexOf(ROUTES) === 0) {
-        const key = e.name.split(':')[1]
-        if (observedEntries[key]) {
-          observedEntries[key].push(e.duration)
+        const method = e.name.split(':')[1].split('|')[0]
+        const route = e.name.split(':')[1].split('|')[1]
+        if (observedEntries[method] && observedEntries[method][route]) {
+          observedEntries[method][route].push(e.duration)
         } else {
-          observedEntries[key] = [e.duration]
+          if (!observedEntries[method]) {
+            observedEntries[method] = {}
+          }
+          observedEntries[method][route] = [e.duration]
         }
       }
     }
@@ -39,9 +44,17 @@ module.exports = fp(async function (fastify, opts) {
     if (reply.context.config.statsId) {
       routeId = reply.context.config.statsId
     }
+
     const id = request.raw.id
     performance.mark(ONSEND + id)
-    performance.measure(ROUTES + routeId, ONREQUEST + id, ONSEND + id)
+
+    let key
+    if (reply.context.config.mergeMethods) {
+      key = `${ROUTES}${ALLMETHODS}|${routeId}`
+    } else {
+      key = `${ROUTES}${request.raw.method}|${routeId}`
+    }
+    performance.measure(key, ONREQUEST + id, ONSEND + id)
 
     performance.clearMarks(ONSEND + id)
     performance.clearMarks(ONREQUEST + id)
@@ -69,19 +82,30 @@ module.exports = fp(async function (fastify, opts) {
   function stats () {
     const m = measurements()
     observedEntries = {}
+    const results = {}
 
-    return Object.keys(m).reduce((acc, k) => {
-      const s = summary(m[k])
-      acc[k] = {
-        mean: s.mean(),
-        mode: s.mode(),
-        median: s.median(),
-        max: s.max(),
-        min: s.min(),
-        sd: s.sd()
+    const methods = Object.keys(m)
+    for (let i = 0; i < methods.length; i++) {
+      const method = methods[i]
+      const routes = Object.keys(m[method])
+      for (let j = 0; j < routes.length; j++) {
+        const route = routes[j]
+        const s = summary(m[method][route])
+
+        if (!results[method]) {
+          results[method] = {}
+        }
+
+        results[method][route] = {
+          mean: s.mean(),
+          mode: s.mode(),
+          median: s.median(),
+          max: s.max(),
+          min: s.min(),
+          sd: s.sd()
+        }
       }
-
-      return acc
-    }, { })
+    }
+    return results
   }
 }, { fastify: '2.x' })
