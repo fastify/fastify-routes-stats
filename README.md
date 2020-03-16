@@ -1,6 +1,6 @@
 # fastify-routes-stats
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/fastify/fastify-routes-stats.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/fastify/fastify-routes-stats.svg)](https://greenkeeper.io/) [![Node.js CI](https://github.com/fastify/fastify-routes-stats/fastify-routes-stats/workflows/Node.js%20CI/badge.svg)](https://github.com/fastify/fastify-routes-stats/fastify-routes-stats/actions)
 
 Provide stats for routes using `require('perf_hooks')`, for **Fastify**.
 
