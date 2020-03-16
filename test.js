@@ -115,7 +115,7 @@ test('group stats together', async (t) => {
 
   const stats = fastify.stats()
   const nums = stats['grouped-stats']
-  t.ok(Object.keys(stats).length === 2) // Setting minimum fastify for plugin updates keys to: [ 'fastify', 'grouped-stats' ]
+  t.ok(Object.keys(stats).length === 1)
   t.ok(nums)
   t.ok(nums.mean >= 0)
   t.ok(nums.mode >= 0)

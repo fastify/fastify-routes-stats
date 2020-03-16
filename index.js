@@ -82,6 +82,6 @@ module.exports = fp(async function (fastify, opts) {
       }
 
       return acc
-    }, { fastify: '2.x' })
+    }, { })
   }
-})
+}, { fastify: '2.x' })
