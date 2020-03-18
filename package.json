@@ -27,18 +27,18 @@
   "homepage": "https://github.com/fastify/fastify-routes-stats#readme",
   "devDependencies": {
     "fastify": "^2.0.0",
-    "pre-commit": "^1.2.2",
+    "husky": "^4.2.3",
     "snazzy": "^8.0.0",
     "standard": "^14.0.2",
-    "tap": "^12.6.5"
+    "tap": "^14.0.0"
   },
   "dependencies": {
     "fastify-plugin": "^1.1.0",
     "summary": "^1.0.0"
   },
-  "greenkeeper": {
-    "ignore": [
-      "tap"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   }
 }
