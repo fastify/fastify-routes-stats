@@ -157,36 +157,3 @@ test('produces stats for multiple methods', async (t) => {
   t.ok(posts[0] >= 0)
   t.ok(posts.length === 1)
 })
-
-test('produces stats for multiple methods merged together', async (t) => {
-  const fastify = Fastify()
-  fastify.register(Stats)
-
-  t.tearDown(fastify.close.bind(fastify))
-
-  fastify.get('/mergeMethods', { config: { mergeMethods: true } }, function (request, reply) {
-    reply.send({ hello: 'world' })
-  })
-
-  fastify.post('/mergeMethods', { config: { mergeMethods: true } }, function (request, reply) {
-    reply.send({ hello: 'world', POST: true })
-  })
-
-  await fastify.inject({
-    url: '/mergeMethods'
-  })
-
-  await fastify.inject({
-    url: '/mergeMethods',
-    method: 'POST'
-  })
-
-  const measurements = fastify.measurements()
-  t.notOk(measurements.GET)
-  t.notOk(measurements.POST)
-
-  const all = measurements['All Methods']['/mergeMethods']
-  console.log(all)
-  t.ok(all[0] >= 0)
-  t.ok(all.length === 2)
-})

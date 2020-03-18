@@ -37,32 +37,12 @@ fastify.get('/__stats__', async function () {
   return this.stats()
 })
 
-// To group all methods of a route together:
-//   mergeMethods: true
-fastify.get('/mergeMethods', { config: { mergeMethods: true } }, function (request, reply) {
-  reply.send({ hello: 'world' })
-})
-
-fastify.post('/mergeMethods', { config: { mergeMethods: true } }, function (request, reply) {
-  reply.send({ hello: 'world', POST: true })
-})
-
 fastify.listen(3000)
 ```
 
 ```sh
 $ curl -s localhost:3000/__stats__ | jsonlint
 {
-  "All Methods": {
-    "/mergeMethods": {
-      "mean": 0.09750119999999998,
-      "mode": 0.310097,
-      "median": 0.049117499999999994,
-      "max": 0.310097,
-      "min": 0.044229,
-      "sd": 0.08820506012796418
-    }
-  },
   "GET": {
     "/": {
       "mean": 0.2406786,

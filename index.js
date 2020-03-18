@@ -7,7 +7,6 @@ const summary = require('summary')
 const ONSEND = 'on-send-'
 const ONREQUEST = 'on-request-'
 const ROUTES = 'fastify-routes:'
-const ALLMETHODS = 'All Methods'
 
 module.exports = fp(async function (fastify, opts) {
   let observedEntries = {}
@@ -48,12 +47,7 @@ module.exports = fp(async function (fastify, opts) {
     const id = request.raw.id
     performance.mark(ONSEND + id)
 
-    let key
-    if (reply.context.config.mergeMethods) {
-      key = `${ROUTES}${ALLMETHODS}|${routeId}`
-    } else {
-      key = `${ROUTES}${request.raw.method}|${routeId}`
-    }
+    const key = `${ROUTES}${request.raw.method}|${routeId}`
     performance.measure(key, ONREQUEST + id, ONSEND + id)
 
     performance.clearMarks(ONSEND + id)
