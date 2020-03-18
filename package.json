@@ -1,6 +1,6 @@
 {
   "name": "fastify-routes-stats",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "provide stats for routes using perf_hooks, for fastify",
   "main": "index.js",
   "scripts": {
