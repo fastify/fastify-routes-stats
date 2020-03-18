@@ -11,6 +11,10 @@ fastify.get('/', function (request, reply) {
   reply.send({ hello: 'world' })
 })
 
+fastify.post('/', function (request, reply) {
+  reply.send({ hello: 'world', POST: true })
+})
+
 fastify.get('/:param/dynamic-route-example', { config: { statsId: 'group-stats-together' } }, function (request, reply) {
   reply.send({ hello: 'world' })
 })
