@@ -60,3 +60,5 @@ typings/
 *clinic-doctor*
 *flamegraph*
 *0x*
+
+package-lock.json
