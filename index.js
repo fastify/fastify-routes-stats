@@ -102,4 +102,4 @@ module.exports = fp(async function (fastify, opts) {
     }
     return results
   }
-}, { fastify: '>=3.x' })
+}, { fastify: '3.x' })
