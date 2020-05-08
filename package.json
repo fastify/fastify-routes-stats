@@ -26,14 +26,14 @@
   },
   "homepage": "https://github.com/fastify/fastify-routes-stats#readme",
   "devDependencies": {
-    "fastify": "^2.0.0",
+    "fastify": "^3.0.0-rc.1",
     "husky": "^4.2.3",
     "snazzy": "^8.0.0",
     "standard": "^14.0.2",
     "tap": "^14.0.0"
   },
   "dependencies": {
-    "fastify-plugin": "^1.1.0",
+    "fastify-plugin": "^2.0.0",
     "summary": "^1.0.0"
   },
   "husky": {
