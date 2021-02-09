@@ -27,7 +27,7 @@
   "homepage": "https://github.com/fastify/fastify-routes-stats#readme",
   "devDependencies": {
     "fastify": "^3.0.0",
-    "husky": "^4.2.3",
+    "husky": "^5.0.9",
     "snazzy": "^9.0.0",
     "standard": "^16.0.0",
     "tap": "^14.0.0"
