@@ -13,7 +13,7 @@ test('produces some stats', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
 
-  t.tearDown(fastify.close.bind(fastify))
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.get('/', async () => {
     return { hello: 'world' }
@@ -33,7 +33,7 @@ test('measurements returns an array', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
 
-  t.tearDown(fastify.close.bind(fastify))
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.get('/', async () => {
     return { hello: 'world' }
@@ -63,7 +63,7 @@ test('creates stats', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
 
-  t.tearDown(fastify.close.bind(fastify))
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.get('/', async () => {
     return { hello: 'world' }
@@ -95,7 +95,7 @@ test('group stats together', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
 
-  t.tearDown(fastify.close.bind(fastify))
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.get('/:param/grouped-stats', { config: { statsId: 'grouped-stats' } }, async () => {
     return { hello: 'world' }
@@ -129,7 +129,7 @@ test('produces stats for multiple methods', async (t) => {
   const fastify = Fastify()
   fastify.register(Stats)
 
-  t.tearDown(fastify.close.bind(fastify))
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.get('/', async () => {
     return { hello: 'world', method: 'GET' }
