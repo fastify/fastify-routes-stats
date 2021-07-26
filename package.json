@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/fastify/fastify-routes-stats#readme",
   "devDependencies": {
+    "@sinonjs/fake-timers": "^7.1.2",
     "fastify": "^3.0.0",
     "husky": "^7.0.0",
     "snazzy": "^9.0.0",
