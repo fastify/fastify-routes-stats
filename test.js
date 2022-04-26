@@ -233,7 +233,7 @@ test('logs stats every 30 sec', async (t) => {
     transform: (chunk, enc, cb) => cb(null, JSON.parse(chunk))
   })
 
-  const fastify = Fastify({ logger: { stream: stream, level: 'info' } })
+  const fastify = Fastify({ logger: { stream, level: 'info' } })
   fastify.register(Stats)
 
   t.teardown(() => {
