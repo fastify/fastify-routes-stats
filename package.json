@@ -1,6 +1,6 @@
 {
-  "name": "fastify-routes-stats",
-  "version": "2.0.1",
+  "name": "@fastify/routes-stats",
+  "version": "3.0.0",
   "description": "provide stats for routes using perf_hooks, for fastify",
   "main": "index.js",
   "scripts": {
@@ -41,5 +41,8 @@
     "hooks": {
       "pre-commit": "npm test"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
