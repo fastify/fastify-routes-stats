@@ -1,7 +1,7 @@
-# fastify-routes-stats
+# @fastify/routes-stats
 
 ![CI](https://github.com/fastify/fastify-routes-stats/workflows/CI/badge.svg)
-[![NPM version](https://img.shields.io/npm/v/fastify-routes-stats.svg?style=flat)](https://www.npmjs.com/package/fastify-routes-stats)
+[![NPM version](https://img.shields.io/npm/v/@fastify/routes-stats.svg?style=flat)](https://www.npmjs.com/package/@fastify/routes-stats)
 [![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-routes-stats/badge.svg)](https://snyk.io/test/github/fastify/fastify-routes-stats)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
@@ -10,7 +10,7 @@ Provide stats for routes using `require('perf_hooks')`, for **Fastify**.
 ## Install
 
 ```sh
-npm i fastify-routes-stats
+npm i @fastify/routes-stats
 ```
 
 ## Example
