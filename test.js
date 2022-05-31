@@ -5,7 +5,8 @@ const { performance } = require('perf_hooks')
 const { Transform } = require('stream')
 const Fastify = require('fastify')
 const Stats = require('.')
-const fakeTimer = require('@sinonjs/fake-timers')
+// const fakeTimer = require('@sinonjs/fake-timers')
+const setTimeoutPromise = require('util').promisify(setTimeout)
 
 beforeEach(async () => {
   performance.clearMarks()
@@ -25,6 +26,7 @@ test('produces some stats', async (t) => {
     url: '/'
   })
 
+  await setTimeoutPromise(1)
   const measurements = fastify.measurements()
   const nums = measurements.GET['/']
   t.ok(nums[0] >= 0)
@@ -49,6 +51,7 @@ test('has no conflicts with custom measures', async (t) => {
     url: '/'
   })
 
+  await setTimeoutPromise(1)
   const measurements = fastify.measurements()
   const nums = measurements.GET['/']
   t.ok(nums[0] >= 0)
@@ -77,6 +80,7 @@ test('measurements returns an array', async (t) => {
     url: '/'
   })
 
+  await setTimeoutPromise(1)
   const measurements = fastify.measurements()
   const nums = measurements.GET['/']
   t.ok(nums.length === 3)
@@ -107,6 +111,7 @@ test('creates stats', async (t) => {
     url: '/'
   })
 
+  await setTimeoutPromise(1)
   const stats = fastify.stats()
   const nums = stats.GET['/']
   t.ok(nums.mean >= 0)
@@ -139,6 +144,7 @@ test('group stats together', async (t) => {
     url: '/3/grouped-stats'
   })
 
+  await setTimeoutPromise(1)
   const stats = fastify.stats()
   const nums = stats.GET['grouped-stats']
   t.ok(Object.keys(stats).length === 1)
@@ -174,6 +180,7 @@ test('produces stats for multiple methods', async (t) => {
     method: 'POST'
   })
 
+  await setTimeoutPromise(1)
   const measurements = fastify.measurements()
   const gets = measurements.GET['/']
   t.ok(gets[0] >= 0)
@@ -214,6 +221,7 @@ test('produces stats for multiple routes of method', async (t) => {
     url: '/second'
   })
 
+  await setTimeoutPromise(1)
   const stats = fastify.stats()
   Object.values(stats.GET).forEach(nums => {
     t.ok(nums.mean >= 0)
@@ -225,19 +233,17 @@ test('produces stats for multiple routes of method', async (t) => {
   })
 })
 
-test('logs stats every 30 sec', async (t) => {
-  const clock = fakeTimer.install()
-
+test('logs stats every printInterval sec', async (t) => {
   const stream = new Transform({
     objectMode: true,
     transform: (chunk, enc, cb) => cb(null, JSON.parse(chunk))
   })
 
   const fastify = Fastify({ logger: { stream, level: 'info' } })
-  fastify.register(Stats)
+  fastify.register(Stats, { printInterval: 500 })
 
   t.teardown(() => {
-    clock.uninstall()
+    // clock.uninstall()
     fastify.close()
   })
 
@@ -253,7 +259,7 @@ test('logs stats every 30 sec', async (t) => {
 
   let i = 0
   stream.on('data', line => {
-    t.match(line, matches[i])
+    t.match(line, matches[i], `Line ${i}`)
     i += 1
   })
 
@@ -261,5 +267,8 @@ test('logs stats every 30 sec', async (t) => {
     url: '/'
   })
 
-  clock.tick('00:35')
+  await setTimeoutPromise(800)
+  // TODO: restore after https://github.com/sinonjs/fake-timers/issues/430
+  // const clock = fakeTimer.install()
+  // await clock.tickAsync(35000)
 })
