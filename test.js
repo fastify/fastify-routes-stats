@@ -5,6 +5,7 @@ const { performance } = require('perf_hooks')
 const { Transform } = require('stream')
 const Fastify = require('fastify')
 const Stats = require('.')
+// const fakeTimer = require('@sinonjs/fake-timers')
 const setTimeoutPromise = require('util').promisify(setTimeout)
 
 beforeEach(async () => {
@@ -242,6 +243,7 @@ test('logs stats every printInterval sec', async (t) => {
   fastify.register(Stats, { printInterval: 500 })
 
   t.teardown(() => {
+    // clock.uninstall()
     fastify.close()
   })
 
@@ -267,4 +269,6 @@ test('logs stats every printInterval sec', async (t) => {
 
   await setTimeoutPromise(800)
   // TODO: restore after https://github.com/sinonjs/fake-timers/issues/430
+  // const clock = fakeTimer.install()
+  // await clock.tickAsync(35000)
 })
