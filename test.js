@@ -26,7 +26,7 @@ test('produces some stats', async (t) => {
     url: '/'
   })
 
-  await setTimeoutPromise(1)
+  await setTimeoutPromise(10)
   const measurements = fastify.measurements()
   const nums = measurements.GET['/']
   t.ok(nums[0] >= 0)
@@ -51,7 +51,7 @@ test('has no conflicts with custom measures', async (t) => {
     url: '/'
   })
 
-  await setTimeoutPromise(1)
+  await setTimeoutPromise(10)
   const measurements = fastify.measurements()
   const nums = measurements.GET['/']
   t.ok(nums[0] >= 0)
@@ -80,7 +80,7 @@ test('measurements returns an array', async (t) => {
     url: '/'
   })
 
-  await setTimeoutPromise(1)
+  await setTimeoutPromise(10)
   const measurements = fastify.measurements()
   const nums = measurements.GET['/']
   t.ok(nums.length === 3)
@@ -111,7 +111,7 @@ test('creates stats', async (t) => {
     url: '/'
   })
 
-  await setTimeoutPromise(1)
+  await setTimeoutPromise(10)
   const stats = fastify.stats()
   const nums = stats.GET['/']
   t.ok(nums.mean >= 0)
@@ -144,7 +144,7 @@ test('group stats together', async (t) => {
     url: '/3/grouped-stats'
   })
 
-  await setTimeoutPromise(1)
+  await setTimeoutPromise(10)
   const stats = fastify.stats()
   const nums = stats.GET['grouped-stats']
   t.ok(Object.keys(stats).length === 1)
@@ -180,7 +180,7 @@ test('produces stats for multiple methods', async (t) => {
     method: 'POST'
   })
 
-  await setTimeoutPromise(1)
+  await setTimeoutPromise(10)
   const measurements = fastify.measurements()
   const gets = measurements.GET['/']
   t.ok(gets[0] >= 0)
@@ -221,7 +221,7 @@ test('produces stats for multiple routes of method', async (t) => {
     url: '/second'
   })
 
-  await setTimeoutPromise(1)
+  await setTimeoutPromise(10)
   const stats = fastify.stats()
   Object.values(stats.GET).forEach(nums => {
     t.ok(nums.mean >= 0)
