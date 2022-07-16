@@ -30,7 +30,7 @@ module.exports = fp(async function (fastify, opts) {
 
     performance.clearMarks()
   })
-  obs.observe({ entryTypes: ['measure'] })
+  obs.observe({ entryTypes: ['measure'], buffered: true })
 
   fastify.addHook('onRequest', function (request, reply, next) {
     const id = request.raw.id
@@ -59,7 +59,9 @@ module.exports = fp(async function (fastify, opts) {
   fastify.decorate('measurements', measurements)
   fastify.decorate('stats', stats)
 
-  const interval = setInterval(() => fastify.log.info({ stats: stats() }, 'routes stats'), 30000)
+  const interval = setInterval(() => {
+    fastify.log.info({ stats: stats() }, 'routes stats')
+  }, opts.printInterval || 30000)
   interval.unref()
 
   fastify.onClose(function () {
