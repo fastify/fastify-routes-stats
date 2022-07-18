@@ -1,6 +1,6 @@
 {
   "name": "@fastify/routes-stats",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "provide stats for routes using perf_hooks, for fastify",
   "main": "index.js",
   "scripts": {
@@ -26,16 +26,16 @@
   },
   "homepage": "https://github.com/fastify/fastify-routes-stats#readme",
   "devDependencies": {
-    "@sinonjs/fake-timers": "^9.0.0",
-    "fastify": "^3.0.0",
+    "@sinonjs/fake-timers": "^9.1.2",
+    "fastify": "^4.2.1",
     "husky": "^8.0.1",
     "snazzy": "^9.0.0",
     "standard": "^17.0.0",
-    "tap": "^16.0.0"
+    "tap": "^16.2.0"
   },
   "dependencies": {
-    "fastify-plugin": "^3.0.0",
-    "summary": "^2.0.0"
+    "fastify-plugin": "^4.0.0",
+    "summary": "^2.1.0"
   },
   "husky": {
     "hooks": {

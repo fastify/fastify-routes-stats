@@ -20,7 +20,9 @@ npm i @fastify/routes-stats
 const Fastify = require('fastify')
 const fastify = Fastify()
 
-fastify.register(require('.'))
+fastify.register(require('@fastify/routes-stats'), {
+  printInterval: 4000, // milliseconds
+})
 
 fastify.get('/', function (request, reply) {
   reply.send({ hello: 'world' })
@@ -68,7 +70,7 @@ $ curl -s localhost:3000/__stats__ | jsonlint
 }
 ```
 
-It will also log a stat object every 30 seconds.
+It will also log a stat object every 30 seconds (by default).
 
 ## License
 
