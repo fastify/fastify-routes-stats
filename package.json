@@ -4,7 +4,8 @@
   "description": "provide stats for routes using perf_hooks, for fastify",
   "main": "index.js",
   "scripts": {
-    "test": "standard | snazzy && tap test.js"
+    "lint": "standard | snazzy",
+    "test": "tap test.js"
   },
   "repository": {
     "type": "git",
