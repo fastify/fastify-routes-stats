@@ -23,4 +23,4 @@ fastify.get('/__stats__', function (request, reply) {
   reply.send(this.stats())
 })
 
-fastify.listen(3000)
+fastify.listen({ port: 3000 })

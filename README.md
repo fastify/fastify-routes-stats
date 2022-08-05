@@ -41,7 +41,7 @@ fastify.get('/__stats__', async function () {
   return this.stats()
 })
 
-fastify.listen(3000)
+fastify.listen({ port: 3000 })
 ```
 
 ```sh
