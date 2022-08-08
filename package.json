@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard | snazzy",
-    "test": "tap test.js"
+    "test": "npm run test:unit",
+    "test:unit": "tap"
   },
   "repository": {
     "type": "git",
