@@ -4,7 +4,7 @@ const { beforeEach, test } = require('tap')
 const { performance } = require('perf_hooks')
 const { Transform } = require('stream')
 const Fastify = require('fastify')
-const Stats = require('.')
+const Stats = require('..')
 const fakeTimer = require('@sinonjs/fake-timers')
 const setTimeoutPromise = require('util').promisify(setTimeout)
 
