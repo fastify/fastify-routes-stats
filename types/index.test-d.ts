@@ -10,7 +10,6 @@ expectError(fastify.register(fastifyRoutesStats, { printInterval: 'a' }))
 expectAssignable<Function>(fastify.measurements)
 expectAssignable<Function>(fastify.stats)
 
-
 fastify.get('/stats', function (req, reply) {
   expectAssignable<Function>(this.measurements)
   expectAssignable<Function>(this.stats)
