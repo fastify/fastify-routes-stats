@@ -5,7 +5,7 @@ const fastify = Fastify({
   logger: true
 })
 
-fastify.register(require('.'))
+fastify.register(require('..'))
 
 fastify.get('/', function (request, reply) {
   reply.send({ hello: 'world' })
