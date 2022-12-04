@@ -8,7 +8,7 @@ const ONSEND = 'on-send-'
 const ONREQUEST = 'on-request-'
 const ROUTES = 'fastify-routes:'
 
-module.exports = fp(async function (fastify, opts) {
+async function fastifyRoutesStats (fastify, opts) {
   let observedEntries = {}
   const obs = new PerformanceObserver((items) => {
     const fetchedItems = items.getEntries()
@@ -104,7 +104,11 @@ module.exports = fp(async function (fastify, opts) {
     }
     return results
   }
-}, {
+}
+
+module.exports = fp(fastifyRoutesStats, {
   fastify: '4.x',
-  name: '@fastify/route-stats'
+  name: '@fastify/routes-stats'
 })
+module.exports.default = fastifyRoutesStats
+module.exports.fastifyRoutesStats = fastifyRoutesStats
