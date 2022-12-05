@@ -1,27 +1,34 @@
 import { FastifyPluginAsync, HTTPMethods } from "fastify";
 
-interface Stats {
-  mean: number;
-  mode: number;
-  median: number;
-  max: number;
-  min: number;
-  sd: number;
-}
-
 declare module 'fastify' {
   interface FastifyInstance {
-    stats(): Partial<Record<HTTPMethods, Record<string, Stats>>>;
+    stats(): Partial<Record<HTTPMethods, Record<string, fastifyRoutesStats.Stats>>>;
     measurements(): Partial<Record<HTTPMethods, Record<string, Array<number>>>>;
   }
 }
 
-interface FastifyRoutesStatsOptions {
-  /**
-   * @default 30000
-   */
-  printInterval?: number;
+type FastifyRoutesStats = FastifyPluginAsync<fastifyRoutesStats.FastifyRoutesStatsOptions>
+
+declare namespace fastifyRoutesStats {
+  export interface Stats {
+    mean: number;
+    mode: number;
+    median: number;
+    max: number;
+    min: number;
+    sd: number;
+  }
+  
+  export interface FastifyRoutesStatsOptions {
+    /**
+     * @default 30000
+     */
+    printInterval?: number;
+  }
+
+  export const fastifyRoutesStats: FastifyRoutesStats
+  export { fastifyRoutesStats as default }
 }
 
-declare const fastifyRoutesStats: FastifyPluginAsync<FastifyRoutesStatsOptions>
-export default fastifyRoutesStats
+declare function fastifyRoutesStats(...params: Parameters<FastifyRoutesStats>): ReturnType<FastifyRoutesStats>
+export = fastifyRoutesStats
