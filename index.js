@@ -28,8 +28,22 @@ async function fastifyRoutesStats (fastify, opts) {
       }
     }
 
-    performance.clearMarks()
+    clearPerformance()
   })
+
+  // Node 14 does not have clearMeasures but Node 16 and above need it to avoid
+  // a memory leak.
+  /* istanbul ignore next */
+  const clearPerformance = performance.clearMeasures
+    ? () => {
+        performance.clearMarks()
+        performance.clearMeasures()
+      }
+    : () => {
+        /* istanbul ignore next */
+        performance.clearMarks()
+      }
+
   obs.observe({ entryTypes: ['measure'], buffered: true })
 
   fastify.addHook('onRequest', function (request, reply, next) {
