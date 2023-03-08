@@ -59,15 +59,17 @@ async function fastifyRoutesStats (fastify, opts) {
     const routeId = reply.context.config.statsId
       ? reply.context.config.statsId
       : request.raw.url
+    
+    const id = request.raw.id ?? null 
+    if (id) {
+      performance.mark(ONSEND + id)
 
-    const id = request.raw.id
-    performance.mark(ONSEND + id)
+      const key = `${ROUTES}${request.raw.method}|${routeId}`
+      performance.measure(key, ONREQUEST + id, ONSEND + id)
 
-    const key = `${ROUTES}${request.raw.method}|${routeId}`
-    performance.measure(key, ONREQUEST + id, ONSEND + id)
-
-    performance.clearMarks(ONSEND + id)
-    performance.clearMarks(ONREQUEST + id)
+      performance.clearMarks(ONSEND + id)
+      performance.clearMarks(ONREQUEST + id)
+    }
 
     next()
   })
