@@ -2,7 +2,7 @@
 
 const fp = require('fastify-plugin')
 const { performance, PerformanceObserver } = require('perf_hooks')
-const summary = require('summary')
+const processPerformanceList = require('./lib/processPerformanceList')
 
 const ONSEND = 'on-send-'
 const ONREQUEST = 'on-request-'
@@ -100,20 +100,12 @@ async function fastifyRoutesStats (fastify, opts) {
       const routes = Object.keys(m[method])
       for (let j = 0; j < routes.length; j++) {
         const route = routes[j]
-        const s = summary(m[method][route])
 
         if (!results[method]) {
           results[method] = {}
         }
 
-        results[method][route] = {
-          mean: s.mean(),
-          mode: s.mode(),
-          median: s.median(),
-          max: s.max(),
-          min: s.min(),
-          sd: s.sd()
-        }
+        results[method][route] = processPerformanceList(m[method][route])
       }
     }
     return results
