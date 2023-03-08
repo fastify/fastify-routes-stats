@@ -6,6 +6,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "lint": "standard | snazzy",
+    "lint:fix": "standard --fix",
     "test": "npm run test:unit && npm run test:typescript",
     "test:unit": "tap",
     "test:typescript": "tsd"
@@ -40,8 +41,7 @@
     "tsd": "^0.26.0"
   },
   "dependencies": {
-    "fastify-plugin": "^4.0.0",
-    "summary": "^2.1.0"
+    "fastify-plugin": "^4.0.0"
   },
   "pre-commit": [
     "lint",
