@@ -50,8 +50,9 @@ async function fastifyRoutesStats (fastify, opts) {
   obs.observe({ entryTypes: ['measure'], buffered: true })
 
   fastify.addHook('onRequest', function (request, reply, next) {
-    const id = request.raw.id
+    const id = request.id
     performance.mark(ONREQUEST + id)
+    reply.context.performanceMark = true;
     next()
   })
 
@@ -60,18 +61,15 @@ async function fastifyRoutesStats (fastify, opts) {
       ? reply.context.config.statsId
       : request.raw.url
 
-    const id = request.raw.id
-    performance.mark(ONSEND + id)
-
+    const id = request.id
     const key = `${ROUTES}${request.raw.method}|${routeId}`
-    try {
+    if (reply.context.performanceMark) {
+      performance.mark(ONSEND + id)
       performance.measure(key, ONREQUEST + id, ONSEND + id)
-    } catch (e) {
-      fastify.log.error('missing request mark')
-    }
-    performance.clearMarks(ONSEND + id)
-    performance.clearMarks(ONREQUEST + id)
-
+      performance.clearMarks(ONSEND + id)
+      performance.clearMarks(ONREQUEST + id)
+    } else fastify.log.error('missing request mark')
+    
     next()
   })
 
