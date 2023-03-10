@@ -10,7 +10,7 @@ const ROUTES = 'fastify-routes:'
 
 async function fastifyRoutesStats (fastify, opts) {
   let observedEntries = {}
-  const { decoratorName = 'performanceMark' } = opts
+  const { decoratorName = 'performanceMarked' } = opts
   const obs = new PerformanceObserver((items) => {
     const fetchedItems = items.getEntries()
     for (let i = 0, il = fetchedItems.length; i < il; ++i) {
