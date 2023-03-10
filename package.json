@@ -1,6 +1,6 @@
 {
   "name": "@fastify/routes-stats",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "provide stats for routes using perf_hooks, for fastify",
   "main": "index.js",
   "types": "types/index.d.ts",
