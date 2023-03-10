@@ -58,19 +58,18 @@ async function fastifyRoutesStats (fastify, opts) {
   })
 
   fastify.addHook('onSend', function (request, reply, _, next) {
-    const routeId = reply.context.config.statsId
-      ? reply.context.config.statsId
-      : request.raw.url
-
-    const id = request.id
-    const key = `${ROUTES}${request.raw.method}|${routeId}`
-
     if (request[decoratorName]) {
+      const routeId = reply.context.config.statsId || request.raw.url
+      const id = request.id
+      const key = `${ROUTES}${request.raw.method}|${routeId}`
+
       performance.mark(ONSEND + id)
       performance.measure(key, ONREQUEST + id, ONSEND + id)
       performance.clearMarks(ONSEND + id)
       performance.clearMarks(ONREQUEST + id)
-    } else fastify.log.error('missing request mark')
+    } else {
+      fastify.log.error('missing request mark')
+    }
 
     next()
   })
