@@ -52,8 +52,7 @@ async function fastifyRoutesStats (fastify, opts) {
   fastify.decorateRequest(decoratorName, false)
 
   fastify.addHook('onRequest', function (request, reply, next) {
-    const id = request.id
-    performance.mark(ONREQUEST + id)
+    performance.mark(ONREQUEST + request.id)
     request[decoratorName] = true
     next()
   })
