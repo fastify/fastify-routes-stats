@@ -22,6 +22,7 @@ const fastify = Fastify()
 
 fastify.register(require('@fastify/routes-stats'), {
   printInterval: 4000, // milliseconds
+  decoratorName: "performanceMark", // decorator is set to true if a performace.mark was called for the request
 })
 
 fastify.get('/', function (request, reply) {
