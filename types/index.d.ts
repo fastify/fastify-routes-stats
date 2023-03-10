@@ -24,6 +24,11 @@ declare namespace fastifyRoutesStats {
      * @default 30000
      */
     printInterval?: number;
+
+    /**
+     * @default 'performanceMarked'
+     */
+    decoratorName?: string
   }
 
   export const fastifyRoutesStats: FastifyRoutesStats

@@ -7,6 +7,9 @@ const fastify = Fastify();
 fastify.register(fastifyRoutesStats, { printInterval: 1000 })
 expectError(fastify.register(fastifyRoutesStats, { printInterval: 'a' }))
 
+fastify.register(fastifyRoutesStats, { decoratorName: 'perfMarker' })
+expectError(fastify.register(fastifyRoutesStats, { decoratorName: 1 }))
+
 expectAssignable<Function>(fastify.measurements)
 expectAssignable<Function>(fastify.stats)
 
