@@ -271,3 +271,34 @@ test('logs stats every printInterval sec', async (t) => {
   const clock = fakeTimer.install()
   await clock.tickAsync(35000)
 })
+
+test('reply sent in a onRequest hook before stats registered', async (t) => {
+  const stream = new Transform({
+    objectMode: true,
+    transform: (chunk, enc, cb) => cb(null, JSON.parse(chunk))
+  })
+
+  const fastify = Fastify({ logger: { stream, level: 'error' } })
+
+  fastify.addHook('onRequest', (request, reply, next) => {
+    reply.send()
+    next()
+  })
+
+  const match = { msg: /missing request mark/ }
+
+  stream.on('data', line => {
+    t.match(line, match, 'Line matched')
+  })
+  fastify.register(Stats)
+
+  t.teardown(fastify.close.bind(fastify))
+
+  fastify.get('/', async () => {
+    return { hello: 'world' }
+  })
+
+  await fastify.inject({
+    url: '/'
+  })
+})

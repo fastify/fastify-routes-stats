@@ -10,6 +10,7 @@ const ROUTES = 'fastify-routes:'
 
 async function fastifyRoutesStats (fastify, opts) {
   let observedEntries = {}
+  const { decoratorName = 'performanceMarked' } = opts
   const obs = new PerformanceObserver((items) => {
     const fetchedItems = items.getEntries()
     for (let i = 0, il = fetchedItems.length; i < il; ++i) {
@@ -48,26 +49,27 @@ async function fastifyRoutesStats (fastify, opts) {
       }
 
   obs.observe({ entryTypes: ['measure'], buffered: true })
+  fastify.decorateRequest(decoratorName, false)
 
   fastify.addHook('onRequest', function (request, reply, next) {
-    const id = request.raw.id
-    performance.mark(ONREQUEST + id)
+    performance.mark(ONREQUEST + request.id)
+    request[decoratorName] = true
     next()
   })
 
   fastify.addHook('onSend', function (request, reply, _, next) {
-    const routeId = reply.context.config.statsId
-      ? reply.context.config.statsId
-      : request.raw.url
+    if (request[decoratorName]) {
+      const routeId = reply.context.config.statsId || request.raw.url
+      const id = request.id
+      const key = `${ROUTES}${request.raw.method}|${routeId}`
 
-    const id = request.raw.id
-    performance.mark(ONSEND + id)
-
-    const key = `${ROUTES}${request.raw.method}|${routeId}`
-    performance.measure(key, ONREQUEST + id, ONSEND + id)
-
-    performance.clearMarks(ONSEND + id)
-    performance.clearMarks(ONREQUEST + id)
+      performance.mark(ONSEND + id)
+      performance.measure(key, ONREQUEST + id, ONSEND + id)
+      performance.clearMarks(ONSEND + id)
+      performance.clearMarks(ONREQUEST + id)
+    } else {
+      fastify.log.error('missing request mark')
+    }
 
     next()
   })
