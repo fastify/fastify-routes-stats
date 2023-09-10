@@ -4,7 +4,7 @@
 [![NPM version](https://img.shields.io/npm/v/@fastify/routes-stats.svg?style=flat)](https://www.npmjs.com/package/@fastify/routes-stats)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
-Provide stats for routes using `require('perf_hooks')`, for **Fastify**.
+Provide stats for routes using `require('node:perf_hooks')`, for **Fastify**.
 
 ## Install
 
