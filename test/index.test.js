@@ -1,12 +1,12 @@
 'use strict'
 
 const { beforeEach, test } = require('tap')
-const { performance } = require('perf_hooks')
-const { Transform } = require('stream')
+const { performance } = require('node:perf_hooks')
+const { Transform } = require('node:stream')
 const Fastify = require('fastify')
 const Stats = require('..')
 const fakeTimer = require('@sinonjs/fake-timers')
-const setTimeoutPromise = require('util').promisify(setTimeout)
+const setTimeoutPromise = require('node:util').promisify(setTimeout)
 
 beforeEach(async () => {
   performance.clearMarks()

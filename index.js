@@ -1,7 +1,7 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const { performance, PerformanceObserver } = require('perf_hooks')
+const { performance, PerformanceObserver } = require('node:perf_hooks')
 const processPerformanceList = require('./lib/processPerformanceList')
 
 const ONSEND = 'on-send-'
