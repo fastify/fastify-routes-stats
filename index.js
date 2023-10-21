@@ -19,7 +19,7 @@ async function fastifyRoutesStats (fastify, opts) {
         const [
           method,
           route
-        ] = e.name.split(':')[1].split('|')
+        ] = e.name.split(':', 2)[1].split('|')
         if (
           method in observedEntries &&
           route in observedEntries[method]
