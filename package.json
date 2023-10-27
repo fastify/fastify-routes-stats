@@ -3,6 +3,7 @@
   "version": "3.4.0",
   "description": "provide stats for routes using perf_hooks, for fastify",
   "main": "index.js",
+  "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
     "lint": "standard | snazzy",
