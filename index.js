@@ -35,7 +35,7 @@ async function fastifyRoutesStats (fastify, opts) {
     clearPerformance()
   })
 
-  /* istanbul ignore next */
+  /* c8 ignore next */
   const clearPerformance = () => {
     performance.clearMarks()
     performance.clearMeasures()
