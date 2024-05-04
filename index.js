@@ -35,18 +35,11 @@ async function fastifyRoutesStats (fastify, opts) {
     clearPerformance()
   })
 
-  // Node 14 does not have clearMeasures but Node 16 and above need it to avoid
-  // a memory leak.
-  /* istanbul ignore next */
-  const clearPerformance = performance.clearMeasures
-    ? () => {
-        performance.clearMarks()
-        performance.clearMeasures()
-      }
-    : () => {
-        /* istanbul ignore next */
-        performance.clearMarks()
-      }
+  /* c8 ignore next */
+  const clearPerformance = () => {
+    performance.clearMarks()
+    performance.clearMeasures()
+  }
 
   obs.observe({ entryTypes: ['measure'], buffered: true })
   fastify.decorateRequest(decoratorName, false)
@@ -59,7 +52,7 @@ async function fastifyRoutesStats (fastify, opts) {
 
   fastify.addHook('onSend', function (request, reply, _, next) {
     if (request[decoratorName]) {
-      const routeId = reply.context.config.statsId || request.raw.url
+      const routeId = request.routeOptions.config.statsId || request.raw.url
       const id = request.id
       const key = `${ROUTES}${request.raw.method}|${routeId}`
 
