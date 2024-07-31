@@ -108,7 +108,7 @@ async function fastifyRoutesStats (fastify, opts) {
 }
 
 module.exports = fp(fastifyRoutesStats, {
-  fastify: '4.x',
+  fastify: '5.x',
   name: '@fastify/routes-stats'
 })
 module.exports.default = fastifyRoutesStats
