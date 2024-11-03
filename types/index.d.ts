@@ -18,7 +18,7 @@ declare namespace fastifyRoutesStats {
     min: number;
     sd: number;
   }
-  
+
   export interface FastifyRoutesStatsOptions {
     /**
      * @default 30000
