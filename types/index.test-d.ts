@@ -2,7 +2,7 @@ import Fastify from 'fastify'
 import { expectAssignable, expectError, expectType } from 'tsd'
 import fastifyRoutesStats from '..'
 
-const fastify = Fastify();
+const fastify = Fastify()
 
 fastify.register(fastifyRoutesStats, { printInterval: 1000 })
 expectError(fastify.register(fastifyRoutesStats, { printInterval: 'a' }))
