@@ -1,4 +1,4 @@
-import { FastifyPluginAsync, HTTPMethods } from "fastify";
+import { FastifyPluginAsync, HTTPMethods } from 'fastify'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -35,5 +35,5 @@ declare namespace fastifyRoutesStats {
   export { fastifyRoutesStats as default }
 }
 
-declare function fastifyRoutesStats(...params: Parameters<FastifyRoutesStats>): ReturnType<FastifyRoutesStats>
+declare function fastifyRoutesStats (...params: Parameters<FastifyRoutesStats>): ReturnType<FastifyRoutesStats>
 export = fastifyRoutesStats
