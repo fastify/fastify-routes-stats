@@ -13,7 +13,7 @@ expectError(fastify.register(fastifyRoutesStats, { decoratorName: 1 }))
 expectAssignable<Function>(fastify.measurements)
 expectAssignable<Function>(fastify.stats)
 
-fastify.get('/stats', function (req, reply) {
+fastify.get('/stats', function () {
   expectAssignable<Function>(this.measurements)
   expectAssignable<Function>(this.stats)
 })
