@@ -44,13 +44,13 @@ async function fastifyRoutesStats (fastify, opts) {
   obs.observe({ entryTypes: ['measure'], buffered: true })
   fastify.decorateRequest(decoratorName, false)
 
-  fastify.addHook('onRequest', function (request, reply, next) {
+  fastify.addHook('onRequest', function (request, _reply, next) {
     performance.mark(ONREQUEST + request.id)
     request[decoratorName] = true
     next()
   })
 
-  fastify.addHook('onSend', function (request, reply, _, next) {
+  fastify.addHook('onSend', function (request, _reply, _, next) {
     if (request[decoratorName]) {
       const routeId = request.routeOptions.config.statsId || request.raw.url
       const id = request.id
