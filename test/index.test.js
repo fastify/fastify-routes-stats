@@ -303,8 +303,6 @@ test('reply sent in a onRequest hook before stats registered', async (t) => {
     next()
   })
 
-  // const match = { msg: /missing request mark/ }
-
   stream.on('data', line => {
     t.assert.match(line.msg, /missing request mark/, 'Line matched')
   })
